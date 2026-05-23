@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-neon-cyan: #00f5ff;
+  --color-neon-purple: #a855f7;
+  --color-bg-primary: var(--bg-primary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+}
+
+@layer base {
+  :root {
+    --bg-primary: #e2e8f0; /* Low light grey background */
+    --text-primary: #0f172a; /* Light mode text */
+    --text-secondary: #475569; /* Light mode muted text */
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark {
+    --bg-primary: #0a0a0a;
+    --text-primary: #e5e7eb;
+    --text-secondary: #9ca3af;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans overflow-x-hidden transition-colors duration-500;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-neon-purple);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-neon-cyan);
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-2xl shadow-sm dark:shadow-none transition-colors duration-500;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-neon-cyan)] to-[var(--color-neon-purple)];
+  }
+
+  .btn-primary {
+    @apply relative px-6 py-3 font-medium text-white rounded-full overflow-hidden transition-all duration-300;
+    background: linear-gradient(90deg, var(--color-neon-purple), var(--color-neon-cyan));
+    background-size: 200% auto;
+  }
+
+  .btn-primary:hover {
+    background-position: right center;
+    box-shadow: 0 0 20px var(--color-neon-purple);
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 font-medium rounded-full border border-[var(--color-neon-cyan)] text-[var(--text-primary)] dark:text-[var(--color-neon-cyan)] hover:bg-[var(--color-neon-cyan)] hover:text-white transition-all duration-300 shadow-[0_0_10px_rgba(0,245,255,0.2)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)];
+  }
+}
