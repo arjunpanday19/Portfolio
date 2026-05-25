@@ -21,13 +21,18 @@ const Contact = () => {
     setFormData({ name: "", email: "", message: "" });
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/arjunpanday9369@gmail.com", {
+      // FormSubmit.co has severe global server outages (Cloudflare 521 Errors).
+      // We are switching to Web3Forms, which is free, highly reliable, and supports AJAX natively.
+      const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE";
+      
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
         body: JSON.stringify({
+          access_key: accessKey,
           name: dataToSend.name,
           email: dataToSend.email,
           message: dataToSend.message
@@ -36,10 +41,11 @@ const Contact = () => {
 
       const result = await response.json();
       
-      if (result.success === "true" || result.success === true) {
+      if (result.success) {
         alert("Message sent successfully!");
       } else {
-        alert("Oops! Something went wrong.");
+        console.error("Web3Forms Error:", result);
+        alert(result.message || "Oops! Something went wrong.");
       }
     } catch (error) {
       console.error(error);
